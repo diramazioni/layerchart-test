@@ -22,8 +22,8 @@
 	let cumulativeDomain = $derived(maxCumulative > 0 ? [0, maxCumulative] : [0, 1]);
 	let baselineScale = $derived(
 		scaleLinear(
-			cumulativeDomain,
 			rainDomain,
+			cumulativeDomain,
 		)
 	);
 </script>
@@ -50,10 +50,7 @@
 		{#snippet marks({ context, visibleSeries })}
 			{#each visibleSeries as s, i}
 				{#if s.key === 'cumulative'}
-					<!-- TODO: Group/xOffset not needed once Spline respects xInterval -->
-					<!-- Can also use a band scale, but then you typically want a time scale for "smart ticks" which can be used but is a little more setup -->
-					{@const start = context.xDomain[0]}
-						<Spline y={s.value} color={s.color} />
+					<Spline y={s.value} color={s.color} />
 				{:else}
 					<Bars y={s.value} insets={{ x: 1 }} color={s.color} />
 				{/if}
@@ -66,8 +63,7 @@
 			<!-- Custom bottom axis not needed once Spline applies xInterval offset -->
 			<Axis
 				placement="bottom"
-				ticks={(scale) =>
-          scaleTime(scale.domain(), scale.range()).ticks(scale.range()[1] / 80)}
+				format="timeFormat"
 				rule
 			/>
 
