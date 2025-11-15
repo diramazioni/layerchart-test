@@ -4,7 +4,7 @@
 
   import { scaleLinear, scaleTime } from "d3-scale";
   import { extent, max, nice } from "d3-array";
-  import { timeDay } from "d3-time";
+  import { timeDay, timeMinute } from "d3-time";
 
   type DataItem = {
     date: Date;
@@ -30,7 +30,7 @@
   <BarChart
     {data}
     x="date"
-    xInterval={timeDay}
+    xInterval={timeMinute.every(15)}
     series={[
       {
         key: "cumulative",
