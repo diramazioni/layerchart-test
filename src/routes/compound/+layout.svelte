@@ -38,7 +38,7 @@
 			case 'oct-1-only':
 				return 'Several data points: The scale for rain is not correctly scaled to the y axis like wise the cumulative values seems off';
 			case 'sep-30-to-oct-11':
-				return 'With several days selected the bars disapears and the dates are crunched together';
+				return "With several days selected the bars disapears, the cumulative values should shows raising values, and the dates are crunched together, I've tried to play with tick in case of values with 0 ";
 			default:
 				return 'Tutti i dati';
 		}
