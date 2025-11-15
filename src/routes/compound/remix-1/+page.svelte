@@ -1,11 +1,19 @@
 <script lang="ts">
 	import { Axis, Bars, BarChart, Group, Tooltip, Spline } from 'layerchart';
+	import { getContext } from 'svelte';
 
 	import { scaleLinear, scaleTime } from 'd3-scale';
 	import { extent, max, nice } from 'd3-array';
 	import { timeDay } from 'd3-time';
 
-	import data from '../data.ts';
+	type DataItem = {
+		date: Date;
+		rain: number;
+		cumulative: number;
+	};
+
+	let dataContext = getContext<{ data: DataItem[] }>('filteredData');
+	let data = $derived(dataContext.data);
 
 	// map `cumulative` values to `rain` scales values
 	let maxRain = $derived(max(data, (d) => d.rain) || 0);
@@ -91,8 +99,8 @@
 					<Tooltip.Header>{data.date.toLocaleString()}</Tooltip.Header>
 					<Tooltip.List>
 						{#each visibleSeries as s}
-							{@const format = (v) => v + ' mm'}
-							<Tooltip.Item label={s.key} color={s.color} value={data[s.key]} {format} />
+							{@const format = (v: number) => v + ' mm'}
+							<Tooltip.Item label={s.key} color={s.color} value={data[s.key as keyof DataItem]} {format} />
 						{/each}
 					</Tooltip.List>
 				{/snippet}

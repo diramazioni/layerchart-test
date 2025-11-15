@@ -1,11 +1,19 @@
 <script lang="ts">
 	import { Axis, Bars, BarChart, Group, Tooltip, Spline } from 'layerchart';
+	import { getContext } from 'svelte';
 
 	import { scaleLinear, scaleTime } from 'd3-scale';
 	import { extent, max, nice } from 'd3-array';
 	import { timeDay } from 'd3-time';
 
-	import data from '../data.ts';
+	type DataItem = {
+		date: Date;
+		rain: number;
+		cumulative: number;
+	};
+
+	let dataContext = getContext<{ data: DataItem[] }>('filteredData');
+	let data = $derived(dataContext.data);
 
 	// map `cumulative` values to `rain` scales values
 	let maxRain = $derived(max(data, (d) => d.rain) || 0);
@@ -47,7 +55,7 @@
 					<!-- TODO: Group/xOffset not needed once Spline respects xInterval -->
 					<!-- Can also use a band scale, but then you typically want a time scale for "smart ticks" which can be used but is a little more setup -->
 					{@const start = context.xDomain[0]}
-					{@const xOffset = (context.xScale(context.xInterval.offset(start)) - context.xScale(start)) / 2}
+					{@const xOffset = context.xInterval ? (context.xScale(context.xInterval.offset(start)) - context.xScale(start)) / 2 : 0}
 					<Group x={xOffset}>
 						<Spline y={s.value} color={s.color} />
 					</Group>
@@ -96,8 +104,8 @@
 					<Tooltip.Header>{data.date.toLocaleString()}</Tooltip.Header>
 					<Tooltip.List>
 						{#each visibleSeries as s}
-							{@const format = (v) => v + ' mm'}
-							<Tooltip.Item label={s.key} color={s.color} value={data[s.key]} {format} />
+							{@const format = (v: number) => v + ' mm'}
+							<Tooltip.Item label={s.key} color={s.color} value={data[s.key as keyof DataItem]} {format} />
 						{/each}
 					</Tooltip.List>
 				{/snippet}
