@@ -34,7 +34,7 @@
 	let filterDescription = $derived(() => {
 		switch (selectedFilter) {
 			case 'from-oct-11':
-				return 'One single non 0 data point for October 11, 2025';
+				return 'One single non 0 data point for October 11, 2025 looks correct';
 			case 'oct-1-only':
 				return 'Several data points: The scale for rain is not correctly scaled to the rainDomain';
 			case 'sep-30-to-oct-11':
@@ -61,7 +61,7 @@
 					onclick={() => selectedFilter = 'from-oct-11'}
 					class="px-4 py-2 rounded {selectedFilter === 'from-oct-11' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}"
 				>
-					Dal 11 Ott
+					11 Ott
 				</button>
 				<button
 					onclick={() => selectedFilter = 'oct-1-only'}
@@ -73,7 +73,7 @@
 					onclick={() => selectedFilter = 'sep-30-to-oct-11'}
 					class="px-4 py-2 rounded {selectedFilter === 'sep-30-to-oct-11' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}"
 				>
-					30 Set - 11 Ott
+					1 Ott - 11 Ott
 				</button>
 			</div>
 		</div>
