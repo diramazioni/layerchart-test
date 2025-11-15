@@ -15,20 +15,21 @@
 	let dataContext = getContext<{ data: DataItem[] }>('filteredData');
 	let data = $derived(dataContext.data);
 
-	// map `cumulative` values to `rain` scales values
+	// map `rain` values to `cumulative` scales values
 	let maxRain = $derived(max(data, (d) => d.rain) || 0);
 	let maxCumulative = $derived(max(data, (d) => d.cumulative) || 0);
 	let rainDomain = $derived(maxRain > 0 ? nice(0, maxRain, 5) : [0, 1]);
 	let cumulativeDomain = $derived(maxCumulative > 0 ? [0, maxCumulative] : [0, 1]);
 	let baselineScale = $derived(
 		scaleLinear(
-			rainDomain,
 			cumulativeDomain,
+			rainDomain,
 		)
 	);
 </script>
 
-<h2>Attempting to make it work 1</h2>
+<h2>Inverting the mapping, map cumulativeDomain (big) to rainDomain (small)</h2>
+<h3>I know this is <strong>wrong</strong> but in this way the cumulative values are rendered correctly in the chart, (however the rain values are now not scaled correctly)</h3>
 <div class="container">
 	<BarChart
 		{data}
@@ -36,12 +37,12 @@
 		series={[
 			{
 				key: 'cumulative',
-				color: 'oklch(0.6733 0.272 22.24)'
+				color: 'oklch(0.6733 0.272 22.24)',
+				value: (d) => baselineScale(d.cumulative)
 			},
 			{
 				key: 'rain',
 				color: 'oklch(0.6733 0.1258 207.53)',
-				value: (d) => baselineScale(d.rain)
 			}
 		]}
 		padding={{ top: 24, bottom: 48, left: 24, right: 32 }}
