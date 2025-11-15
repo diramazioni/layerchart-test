@@ -46,21 +46,23 @@
     legend
   >
     {#snippet marks({ context, visibleSeries })}
+      {@const start = context.xDomain[0]}
+      {@const bandwidth = context.xInterval
+        ? (context.xScale(context.xInterval.offset(start)) -
+            context.xScale(start)) /
+          2
+        : 0}
+
       {#each visibleSeries as s, i}
         {#if s.key === "cumulative"}
           <!-- TODO: Group/xOffset not needed once Spline respects xInterval -->
           <!-- Can also use a band scale, but then you typically want a time scale for "smart ticks" which can be used but is a little more setup -->
-          {@const start = context.xDomain[0]}
-          {@const xOffset = context.xInterval
-            ? (context.xScale(context.xInterval.offset(start)) -
-                context.xScale(start)) /
-              2
-            : 0}
-          <Group x={xOffset}>
+
+          <Group x={bandwidth}>
             <Spline y={s.value} color={s.color} />
           </Group>
         {:else}
-          <Bars y={s.value} insets={{ x: 1 }} color={s.color} />
+          <Bars y={s.value} insets={{ x: bandwidth * 0.2 }} color={s.color} />
         {/if}
       {/each}
     {/snippet}
