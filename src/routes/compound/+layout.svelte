@@ -36,9 +36,9 @@
 			case 'from-oct-11':
 				return 'One single non 0 data point for October 11, 2025 looks correct';
 			case 'oct-1-only':
-				return 'Several data points: The scale for rain is not correctly scaled to the rainDomain';
+				return 'Several data points: The scale for rain is not correctly scaled to the y axis like wise the cumulative values seems off';
 			case 'sep-30-to-oct-11':
-				return 'This cause error for Error: <line> attribute x2: Expected length, "NaN". !!!  open the console:  The x axis fails to show several date ticks';
+				return 'With several days selected the bars disapears and the dates are crunched together';
 			default:
 				return 'Tutti i dati';
 		}
